@@ -8,25 +8,14 @@ let totalValue = 0;
 
 const shoppingListContainer = document.getElementById("shoppingListContainer");
 const shoppingListHeader = document.getElementById("shoppingListHeading");
+
 let isShoppingListRendered = false;
 let filterOn = false;
 
 const filterButton = document.getElementById("filterButton");
 const ratingInput = document.getElementById("ratingInput");
+
 let ratingFilterValue = 0;
-
-filterButton.addEventListener("click", function () {
-  ratingFilterValue = ratingInput.value;
-  ratingInput.value = "";
-
-  filterOn = true;
-
-  console.log("asd", ratingFilterValue);
-
-  dataContainer.innerHTML = "";
-  renderDataList(storeData);
-});
-
 let storeData = [];
 
 fetch(URL)
@@ -40,32 +29,16 @@ function renderDataList(data) {
   for (const [, obj] of Object.entries(data)) {
     if (!filterOn) renderDataItem(obj);
     else if (filterOn) {
-      console.log();
       if (+obj.rating >= +ratingFilterValue) {
         renderDataItem(obj);
       }
     }
   }
 }
-
 function renderDataItem(obj) {
   const wrapper = createWrapperElement(obj);
   dataContainer.appendChild(wrapper);
 }
-
-function addItemToShoppingList(obj) {
-  const shoppingItem = document.createElement("p");
-  shoppingItem.innerText = `${obj.name} - ${obj.price}`;
-
-  if (!isShoppingListRendered) {
-    shoppingListHeader.innerHTML = "Varukorg";
-    shoppingListContainer.appendChild(shoppingListHeader);
-    isShoppingListRendered = true;
-  }
-
-  shoppingListContainer.appendChild(shoppingItem);
-}
-
 function createNameElement(obj) {
   const name = document.createElement("h2");
   name.innerText = obj.name;
@@ -78,7 +51,8 @@ function createImageElement(obj) {
   image.src = obj.images[0].src.small;
   image.alt = obj.images[0].alt;
   image.classList.add("storeImage");
-
+  image.width = "480";
+  image.height = "300";
   image.addEventListener("click", () => {
     updateTotalElement(image);
     addItemToShoppingList(obj);
@@ -118,7 +92,7 @@ function createBuyButton() {
 }
 function createWrapperElement(obj) {
   const wrapper = document.createElement("div");
-
+  wrapper.id = "wrapper";
   const buyButton = createBuyButton();
   buyButton.addEventListener("click", () => {
     addItemToShoppingList(obj);
@@ -134,7 +108,6 @@ function createWrapperElement(obj) {
 
   return wrapper;
 }
-
 function updateTotalElement(image) {
   const element = storeData.find((ele) => {
     if (ele.images[0].alt === image.alt) return ele;
@@ -143,3 +116,24 @@ function updateTotalElement(image) {
   totalValue += +element?.price;
   totalElement.innerText = `Total: ${totalValue}`;
 }
+function addItemToShoppingList(obj) {
+  const shoppingItem = document.createElement("p");
+  shoppingItem.innerText = `${obj.name} - ${obj.price}`;
+
+  if (!isShoppingListRendered) {
+    shoppingListHeader.innerHTML = "Varukorg";
+    shoppingListContainer.appendChild(shoppingListHeader);
+    isShoppingListRendered = true;
+  }
+
+  shoppingListContainer.appendChild(shoppingItem);
+}
+filterButton.addEventListener("click", function () {
+  ratingFilterValue = ratingInput.value;
+  ratingInput.value = "";
+
+  filterOn = true;
+
+  dataContainer.innerHTML = "";
+  renderDataList(storeData);
+});

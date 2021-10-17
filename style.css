@@ -1,0 +1,43 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif, serif;
+}
+
+#inputContainer,
+#shoppingListContainer {
+  padding: 10px 0 0 10px;
+}
+
+p {
+  font-size: 15px;
+  font-weight: 500;
+  word-wrap: break-word;
+  padding: 5px 0;
+}
+
+#dataContainer {
+  width: 1100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+#wrapper {
+  padding: 20px 10px;
+  width: 500px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+button {
+  border: 1px solid black;
+  border-radius: 4px;
+  padding: 0 5px;
+}
